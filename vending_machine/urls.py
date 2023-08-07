@@ -25,9 +25,9 @@ urlpatterns = [
     path("healthcheck/", healthcheck),
     path('login/', vending_views.LoginView.as_view()),
     path("user/", include([
-        path("<str:username>/", vending_views.UserView.as_view()),
         path("<str:username>/balance/", vending_views.UserBalanceView.as_view()),
         path("<str:username>/refund/", vending_views.UserBalanceRefundView.as_view()),
+        path("<str:username>/", vending_views.UserView.as_view()),
     ])),
     path("products/", include([
         path("", vending_views.ProductsView.as_view()),

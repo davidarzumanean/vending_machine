@@ -41,7 +41,6 @@ class UserBalanceView(APIView):
         user = get_user(username)
         return Response({'balance': str(user.balance)}, status=200)
 
-
     def patch(self, request: Request, username):
         user = get_user(username)
         amount = request.data['amount']
