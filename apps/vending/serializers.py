@@ -14,7 +14,7 @@ class UserSerializer(serializers.Serializer):
     id = serializers.UUIDField()
     first_name = serializers.CharField()
     last_name = serializers.CharField()
-    user_name = serializers.CharField()
+    username = serializers.CharField()
     balance = serializers.DecimalField(max_digits=4, decimal_places=2)
 
     def get_user(self, instance):
