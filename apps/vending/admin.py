@@ -9,6 +9,6 @@ admin.site.register(Product, ProductAdmin)
 
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ["first_name", "last_name", "user_name", "balance"]
+    list_display = ["first_name", "last_name", "username", "balance"]
 
 admin.site.register(User, UserAdmin)

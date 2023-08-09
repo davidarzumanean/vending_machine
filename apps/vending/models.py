@@ -13,7 +13,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(Decimal("0.00"))])
     created_at = models.DateTimeField(auto_now_add=True)
     stock = models.DecimalField(max_digits=5, decimal_places=0, validators=[MinValueValidator(Decimal("0"))])
-    logo = models.URLField(max_length=200)
+    logo = models.CharField(max_length=200)
     color = models.CharField(max_length=7, default="#ffffff")
 
 
@@ -24,6 +24,6 @@ class User(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     first_name = models.CharField(max_length=25)
     last_name = models.CharField(max_length=25)
-    user_name = models.CharField(max_length=25)
+    username = models.CharField(max_length=25)
     balance = models.DecimalField(max_digits=4, decimal_places=2, validators=[MinValueValidator(Decimal("0.00"))])
     created_at = models.DateTimeField(auto_now_add=True, editable=False)

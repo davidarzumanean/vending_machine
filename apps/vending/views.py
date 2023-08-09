@@ -6,34 +6,41 @@ from apps.vending.models import Product, User
 from apps.vending.serializers import ProductSerializer, UserSerializer
 
 
-def get_user(username):
+def get_user(username: str) -> User:
     try:
-        user = User.objects.get(user_name=username)
+        return User.objects.get(username=username)
     except User.DoesNotExist:
-        return Response({'error': f'User with user_name {username} does not exist'}, status=404)
+        return None
 
+
+def serialize_user(user: User) -> dict:
     serializer = UserSerializer(user)
     return serializer.data
 
 
 class LoginView(APIView):
-    def get(self, request: Request) -> Response:
-        username = request.query_params.get('user_name', None)
+    def post(self, request: Request) -> Response:
+        username = request.data.get('username')
 
         if not username:
-            return Response({'error': 'user_name parameter is missing in the request'}, status=400)
+            return Response({'error': 'username parameter is missing in the request'}, status=400)
 
-        serializer_data = get_user(username)
-        return Response(serializer_data, status=200)
+        user = get_user(username)
+        if not user:
+            return Response({'error': f'User with username {username} does not exist'}, status=404)
+
+        serialized_user = serialize_user(user)
+        return Response(serialized_user, status=200)
 
 
 class UserView(APIView):
     def get(self, request: Request, username) -> Response:
         if not username:
-            return Response({'error': 'user_name parameter is missing in the request'}, status=400)
+            return Response({'error': 'username parameter is missing in the request'}, status=400)
 
-        serializer_data = get_user(username)
-        return Response(serializer_data, status=200)
+        user = get_user(username)
+        serialized_user = serialize_user(user)
+        return Response(serialized_user, status=200)
 
 
 class UserBalanceView(APIView):
@@ -71,8 +78,8 @@ class BuyProductView(APIView):
         user = get_user(username)
 
         product.stock -= 1
-        user.balance += product.price
         product.save()
+        user.balance -= product.price
         user.save()
 
         return Response({'balance': str(user.balance), 'stock': str(product.stock)}, status=200)
